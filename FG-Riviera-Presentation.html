@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F&G Meats — Premium Beef Programs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-dark: #0D0B09;
+            --bg-warm: #151210;
+            --cream: #F2EDE6;
+            --warm-gray: #A89F94;
+            --amber: #C9A227;
+            --amber-soft: #D4B896;
+            --text-light: #E8E4DF;
+            --text-muted: #8A8279;
+        }
+        
+        html, body {
+            height: 100%;
+            background: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--cream);
+            overflow: hidden;
+        }
+        
+        .presentation {
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide.active {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Typography */
+        .serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 11px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 24px;
+        }
+        
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 72px;
+            line-height: 1.0;
+            color: var(--cream);
+            letter-spacing: -0.02em;
+        }
+        
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 56px;
+            line-height: 1.1;
+            color: var(--cream);
+            letter-spacing: -0.01em;
+        }
+        
+        h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 32px;
+            line-height: 1.3;
+            color: var(--cream);
+        }
+        
+        p {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--warm-gray);
+            max-width: 520px;
+        }
+        
+        .large-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-style: italic;
+            font-size: 28px;
+            line-height: 1.5;
+            color: var(--amber-soft);
+            max-width: 600px;
+        }
+        
+        /* Layout helpers */
+        .content-left {
+            position: absolute;
+            left: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            max-width: 50%;
+        }
+        
+        .content-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 80%;
+            max-width: 900px;
+        }
+        
+        .content-bottom-left {
+            position: absolute;
+            left: 80px;
+            bottom: 100px;
+            max-width: 50%;
+        }
+        
+        .image-right {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 45%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.7;
+        }
+        
+        .image-right::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--bg-dark) 0%, transparent 40%);
+        }
+        
+        .full-image {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+        }
+        
+        .full-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(13,11,9,0.3) 0%, rgba(13,11,9,0.9) 100%);
+        }
+        
+        /* Decorative */
+        .line {
+            width: 60px;
+            height: 1px;
+            background: var(--amber);
+            margin: 32px 0;
+        }
+        
+        .line-center {
+            margin: 32px auto;
+        }
+        
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+        
+        .nav button {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--warm-gray);
+            background: transparent;
+            color: var(--warm-gray);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav button:hover {
+            border-color: var(--amber);
+            color: var(--amber);
+        }
+        
+        .counter {
+            position: fixed;
+            bottom: 48px;
+            left: 40px;
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+        }
+        
+        /* Special slides */
+        .cover-content {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .cover-content h1 {
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 40px;
+        }
+        
+        .cover-content h2 {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        
+        .cover-content p {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 24px;
+            color: var(--warm-gray);
+            max-width: none;
+        }
+        
+        .quote-slide .large-text {
+            font-size: 36px;
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        .closing h2 {
+            margin-bottom: 40px;
+        }
+        
+        .closing p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 24px;
+            text-align: center;
+        }
+        
+        .closing .large-text {
+            margin-top: 48px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        
+        <!-- SLIDE 1: COVER -->
+        <div class="slide active">
+            <div class="cover-content">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 60px; margin-bottom: 48px;">
+                    <img src="./public/images/RDG_black_tagline.webp" alt="RDG Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1); opacity: 0.9;">
+                    <img src="./public/images/fnglogo.png" alt="F&G Meats Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1); opacity: 0.9;">
+                </div>
+                <h2 class="serif">Premium Beef Programs</h2>
+                <div class="line line-center"></div>
+                <p>A Curated Selection</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: F&G WAGYU OVERVIEW -->
+        <div class="slide">
+            <div class="content-left">
+                <p class="eyebrow">F&G American Wagyu</p>
+                <h2>Balanced<br>by Design</h2>
+                <div class="line"></div>
+                <p>While most American Wagyu programs are designed purely to maximize marbling, the result is often overwhelming — too rich, too fatty, difficult to build a full dining experience around. Our program takes a different approach.</p>
+                <br>
+                <p>Sourced from small, family-run ranches across the Midwest. Pure Tajima Wagyu bloodlines crossed with Black Angus, raised under strict "Never Ever" protocols — no hormones, no antibiotics, no shortcuts.</p>
+                <br>
+                <p>BMS 9+ Tomahawk and Tenderloin. Grain-finished for deep marbling, with grass-finished options available. Carcasses hung seven days post-harvest, subprimals wet-aged up to thirty days for tenderness and optimal yield.</p>
+            </div>
+            <div class="image-right" style="background-image: url('./public/images/f&g fillet and tommy.jpeg');"></div>
+        </div>
+
+        <!-- SLIDE 3: F&G WAGYU STATEMENT -->
+        <div class="slide quote-slide">
+            <div class="content-center">
+                <p class="eyebrow">F&G American Wagyu</p>
+                <p class="large-text">"This is not Wagyu designed for three bites.<br>This is Wagyu designed to live on a menu."</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: HANNARI OVERVIEW -->
+        <div class="slide">
+            <div class="content-left" style="max-width: 55%;">
+                <p class="eyebrow">Hannari A5 Japanese Wagyu · Kyoto, Japan</p>
+                <h2>True<br>Luxury</h2>
+                <div class="line"></div>
+                <p>Hannari represents the true expression of Japanese Wagyu at its highest level — not just in grade, but in philosophy. The name itself is Kyoto dialect, meaning "elegant, bright, and gorgeous."</p>
+                <br>
+                <p>The A5 New York Strip comes from Kuroge Washu (Japanese Black) heifers — young female cattle that have never calved — raised exclusively in the Tamba mountains of Kyoto, surrounded by clean underground water and open air. Heifers are significantly harder to fatten than steers and far rarer in distribution, but they produce a distinctly silky fat, rich in oleic acid, and a leaner, more refined red meat high in carnitine.</p>
+                <br>
+                <p>The cattle are raised stress-free and fed with BIOBALANCE — a proprietary lactic acid fermented feed using a globally unique antifungal bacterial strain. Feed composition is controlled and adjusted across all 365 days, calibrated precisely to each animal's growth stage and the day's temperature. The result is healthy, stable fattening that produces not just high marbling, but a specific kind — fine, evenly distributed, and integrated into the muscle.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: HANNARI STATEMENT -->
+        <div class="slide">
+            <div class="content-center">
+                <p class="eyebrow">Hannari A5 Japanese Wagyu</p>
+                <h3 style="margin-bottom: 32px;">The fat dissolves effortlessly — delicate,<br>slightly sweet, and unmistakably refined.<br>It is not just richness. It is precision.</h3>
+                <div class="line line-center"></div>
+                <p style="max-width: 700px; margin: 0 auto 20px; text-align: center;">In today's market, the term "A5" has become widespread — but not all A5 is created equal. Much of what is available is produced at scale, sourced from multiple farms, and pushed through accelerated feeding programs that prioritize fat accumulation over overall balance. The result is often intensely rich, but lacking in refinement and consistency.</p>
+                <p style="max-width: 700px; margin: 0 auto 20px; text-align: center;">Hannari takes a different path. Each animal is selected with intention, raised with a focus on uniformity, and finished in a way that produces a specific type of marbling — creating a clean, melting texture rather than an overwhelming one.</p>
+                <p style="max-width: 700px; margin: 0 auto 32px; text-align: center;">For a restaurant, this is more than a product. It is a statement. The kind of item that defines a menu, elevates perception instantly, and creates a moment guests remember long after the meal is over.</p>
+                <p class="large-text" style="margin: 0 auto; font-size: 30px; max-width: 800px;">"This is not just A5 Wagyu.<br>This is curated Japanese Wagyu — selected, not sourced."</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: GREATER OMAHA OVERVIEW -->
+        <div class="slide">
+            <div class="content-left">
+                <p class="eyebrow">Greater Omaha Prime Angus</p>
+                <h2>Consistency<br>at Scale</h2>
+                <div class="line"></div>
+                <p>Something entirely different, but equally essential — consistency at scale, built over more than a century of discipline and refinement. Founded in 1920, Greater Omaha is one of the largest independent beef packers in the United States, fully integrated from sourcing to distribution.</p>
+                <br>
+                <p>Prime New York Strip, Prime Ribeye, Prime Filet Mignon. Sourced from the Midwest Corn Belt. Predictable yield, reliable sizing, a product that performs under pressure in a professional kitchen. Every single time.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: GREATER OMAHA STATEMENT -->
+        <div class="slide quote-slide">
+            <div class="content-center">
+                <p class="eyebrow">Greater Omaha Prime Angus</p>
+                <p class="large-text">"This is the beef you build a menu on.<br>This is the program that lets everything else work."</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: CLOSING - ACCESS -->
+        <div class="slide">
+            <div class="content-center closing">
+                <p class="eyebrow">F&G Meats</p>
+                <h2>Beyond Any Single Program</h2>
+                <div class="line line-center"></div>
+                <p>At the core of what we do is access. We source and allocate some of the most exclusive beef programs available anywhere — including the only Star-K Kosher Wagyu program in the United States.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: CLOSING - FINAL -->
+        <div class="slide quote-slide">
+            <div class="content-center">
+                <p class="eyebrow">F&G Meats</p>
+                <p class="large-text">"It's not just about having great beef.<br>It's about having something no one else has."</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <button onclick="prevSlide()">←</button>
+        <button onclick="nextSlide()">→</button>
+    </div>
+    <div class="counter"><span id="current">01</span> — <span id="total">09</span></div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const total = slides.length;
+        
+        document.getElementById('total').textContent = total.toString().padStart(2, '0');
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + total) % total;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current').textContent = (currentSlide + 1).toString().padStart(2, '0');
+        }
+        
+        function nextSlide() { showSlide(currentSlide + 1); }
+        function prevSlide() { showSlide(currentSlide - 1); }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+        
+        // Touch support
+        let touchStartX = 0;
+        document.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+        document.addEventListener('touchend', e => {
+            const diff = touchStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) diff > 0 ? nextSlide() : prevSlide();
+        });
+    </script>
+</body>
+</html>

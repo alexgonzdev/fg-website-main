@@ -1,0 +1,16 @@
+{
+  "name": "F&G Meat Distribution",
+  "short_name": "F&G Meats",
+  "description": "Premium meat distribution for discerning establishments",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#c9a962",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
